@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Task {
+private:
+    string description;
+    string dueDate;
+    bool completed;
+
+public:
+    int id;
+    Task(int _id, string _description, string _dueDate) : id(_id), description(_description), dueDate(_dueDate), completed(false) {}
+
+    void markCompleted() {
+        completed = true;
+    }
+
+    void display() {
+        cout << "ID: " << id << ", Description: " << description << ", Due Date: " << dueDate << ", Completed: " << (completed ? "Yes" : "No") << endl;
+    }
+};
+
+class ToDoList {
+private:
+    vector<Task> tasks;
+
+public:
+    void addTask(Task task) {
+        tasks.push_back(task);
+    }
+
+    void displayTasks() {
+        cout << "To-Do List:" << endl;
+        for (Task task : tasks) {
+            task.display();
+        }
+    }
+
+    void markTaskCompleted(int taskId) {
+        for (Task& task : tasks) {
+            if (task.id == taskId) {
+                task.markCompleted();
+                cout << "Task with ID " << taskId << " marked as completed." << endl;
+                return;
+            }
+        }
+        cout << "Task with ID " << taskId << " not found." << endl;
+    }
+
+    void removeTask(int taskId) {
+        for (auto it = tasks.begin(); it != tasks.end(); ++it) {
+            if (it->id == taskId) {
+                tasks.erase(it);
+                cout << "Task with ID " << taskId << " removed." << endl;
+                return;
+            }
+        }
+        cout << "Task with ID " << taskId << " not found." << endl;
+    }
+};
+
+int main() {
+    ToDoList toDoList;
+
+    Task task1(1, "Complete assignment", "2024-06-30");
+    Task task2(2, "Buy groceries", "2024-06-15");
+
+    toDoList.addTask(task1);
+    toDoList.addTask(task2);
+
+    toDoList.displayTasks();
+
+    toDoList.markTaskCompleted(1);
+
+    toDoList.displayTasks();
+
+    toDoList.removeTask(2);
+
+    toDoList.displayTasks();
+
+    return 0;
+}
