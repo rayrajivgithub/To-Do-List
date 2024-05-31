@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Task {
+public:
+    std::string description;
+    bool isCompleted;
+
+    Task(const std::string& desc) : description(desc), isCompleted(false) {}
+};
+
+std::vector<Task> tasks;
+
+void addTask(const std::string& description) {
+    tasks.push_back(Task(description));
+}
+
+void removeTask(int taskIndex) {
+    if (taskIndex >= 0 && taskIndex < tasks.size()) {
+        tasks.erase(tasks.begin() + taskIndex);
+    }
+}
+
+void listTasks() {
+    if (tasks.empty()) {
+        std::cout << "No tasks in the list." << std::endl;
+    } else {
+        for (int i = 0; i < tasks.size(); ++i) {
+            const Task& task = tasks[i];
+            std::cout << (i + 1) << ". [" << (task.isCompleted ? "x" : " ") << "] " << task.description << std::endl;
+        }
+    }
+}
+
+void markAsCompleted(int taskIndex) {
+    if (taskIndex >= 0 && taskIndex < tasks.size()) {
+        tasks[taskIndex].isCompleted = true;
+    }
+}
+
+int main() {
+    while (true) {
+        std::cout << "To-Do List Application" << std::endl;
+        std::cout << "1. Add Task" << std::endl;
+        std::cout << "2. Remove Task" << std::endl;
+        std::cout << "3. List Tasks" << std::endl;
+        std::cout << "4. Mark Task as Completed" << std::endl;
+        std::cout << "5. Quit" << std::endl;
+
+        int choice;
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                std::string description;
+                std::cout << "Enter task description: ";
+                std::cin.ignore();
+                std::getline(std::cin, description);
+                addTask(description);
+                std::cout << "Task added." << std::endl;
+                break;
+            }
+            case 2: {
+                int taskIndex;
+                std::cout << "Enter task index to remove: ";
+                std::cin >> taskIndex;
+                removeTask(taskIndex - 1);
+                std::cout << "Task removed." << std::endl;
+                break;
+            }
+            case 3:
+                listTasks();
+                break;
+            case 4: {
+                int taskIndex;
+                std::cout << "Enter task index to mark as completed: ";
+                std::cin >> taskIndex;
+                markAsCompleted(taskIndex - 1);
+                std::cout << "Task marked as completed." << std::endl;
+                break;
+            }
+            case 5:
+                std::cout << "Goodbye!" << std::endl;
+                return 0;
+            default:
+                std::cout << "Invalid choice. Try again." << std::endl;
+        }
+    }
+
+    return 0;
+}
